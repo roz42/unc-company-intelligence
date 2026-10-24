@@ -20,8 +20,8 @@ jobs:
           version: latest
       - name: Deploy Edge Functions
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.GITHUBDEPLOY }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.DATABASEPASSWORD }}
         run: |
           supabase link --project-ref vlxgfbdczpktuvxxrdqs --password "$SUPABASE_DB_PASSWORD"
           supabase db push --linked --yes
