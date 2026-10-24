@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-const cors = { "Access-Control-Allow-Origin": Deno.env.get("APP_ORIGIN") ?? "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS", "Content-Type": "application/json" };
+const configuredAppUrl = (Deno.env.get("APP_ORIGIN") ?? "").replace(/\/+$/, "");
+const cors = { "Access-Control-Allow-Origin": configuredAppUrl ? new URL(configuredAppUrl).origin : "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS", "Content-Type": "application/json" };
 const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:cors});
 Deno.serve(async req=>{
   if(req.method==="OPTIONS")return new Response("ok",{headers:cors});
@@ -17,7 +18,7 @@ Deno.serve(async req=>{
   // sandbox plans work immediately; environment overrides support other Stripe accounts.
   const priceId=Deno.env.get(plan==="starter"?"STRIPE_STARTER_PRICE_ID":"STRIPE_GROWTH_PRICE_ID")
     ??(plan==="starter"?"price_1UU6X0Q48BaEBlrHOzgjohfq":"price_1UU6XHQ48BaEBlrHS9cZDaT9");
-  const stripeKey=Deno.env.get("STRIPE_SECRET_KEY"),origin=(Deno.env.get("APP_ORIGIN")??"").replace(/\/+$/,"");if(!stripeKey||!origin)return json({error:"Billing secrets and APP_ORIGIN must be configured"},503);
+  const stripeKey=Deno.env.get("STRIPE_SECRET_KEY"),origin=configuredAppUrl;if(!stripeKey||!origin)return json({error:"Billing secrets and APP_ORIGIN must be configured"},503);
   const {data:sub}=await userDb.from("subscriptions").select("stripe_customer_id").eq("organization_id",organizationId).maybeSingle();
   const form=new URLSearchParams();form.set("mode","subscription");form.set("line_items[0][price]",priceId);form.set("line_items[0][quantity]","1");form.set("success_url",`${origin}/?billing=success`);form.set("cancel_url",`${origin}/?billing=cancelled`);form.set("client_reference_id",organizationId);form.set("metadata[organization_id]",organizationId);form.set("metadata[plan]",plan);form.set("subscription_data[metadata][organization_id]",organizationId);form.set("subscription_data[metadata][plan]",plan);if(sub?.stripe_customer_id)form.set("customer",sub.stripe_customer_id);else form.set("customer_email",user.email??"");
   const response=await fetch("https://api.stripe.com/v1/checkout/sessions",{method:"POST",headers:{Authorization:`Bearer ${stripeKey}`,"Content-Type":"application/x-www-form-urlencoded"},body:form});
