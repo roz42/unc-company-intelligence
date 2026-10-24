@@ -6,7 +6,7 @@ Deno.serve(async req=>{
   if(req.method!=="POST")return json({error:"Method not allowed"},405);
   const auth=req.headers.get("Authorization");if(!auth)return json({error:"Sign in required"},401);
   const url=Deno.env.get("SUPABASE_URL")!,publishableKeys=JSON.parse(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS")??"{}");
-  const anon=publishableKeys.default??Deno.env.get("SUPABASE_ANON_KEY")!;
+  const anon=publishableKeys.default??Object.values(publishableKeys)[0]??Deno.env.get("SUPABASE_ANON_KEY")!;
   const userDb=createClient(url,anon,{global:{headers:{Authorization:auth}}});
   const {data:{user}}=await userDb.auth.getUser();if(!user)return json({error:"Invalid session"},401);
   const {plan,organizationId}=await req.json().catch(()=>({}));
