@@ -4,13 +4,13 @@ UNC's agent-led company operations workspace, based on the original `lage` repos
 
 ## Open the workspace
 
-The app is a static site and can be served from GitHub Pages. A Pages workflow is included under `.github/workflows/deploy-pages.yml`. Enable Pages with **Settings → Pages → Build and deployment → GitHub Actions**; pushes to `main` then publish the site. Supabase handles authentication and private company data, and Supabase Edge Functions handle AI and Stripe server requests.
+The app is a static site and can be served from GitHub Pages. A Pages workflow is included under `.github/workflows/deploy-pages.yml`. Enable Pages with **Settings → Pages → Build and deployment → GitHub Actions**; pushes to `main` then publish the site. A second workflow deploys Supabase Edge Functions when their code changes; add a Supabase personal access token as the GitHub Actions secret `SUPABASE_ACCESS_TOKEN`. Supabase handles authentication and private company data, and Supabase Edge Functions handle AI and Stripe server requests.
 
 ## Session history and Supabase
 
 The workspace stores connected conversations and messages in Supabase, scoped to each organization with row-level security. The History drawer can search, reopen, and continue saved conversations. The browser-only version stores sessions in local storage on that device.
 
-Follow [`supabase/SESSION_MEMORY_SETUP.md`](supabase/SESSION_MEMORY_SETUP.md) to run the SQL migrations in Supabase SQL Editor, configure Auth, add the public client settings to `config.js`, and deploy the `agent-chat` Edge Function. The SQL files are also applied with `supabase link --project-ref YOUR_PROJECT_REF` and `supabase db push` from this folder.
+Follow [`supabase/SESSION_MEMORY_SETUP.md`](supabase/SESSION_MEMORY_SETUP.md) to run the SQL migrations in Supabase SQL Editor, configure Auth, and add the public client settings to `config.js`. The SQL files are also applied with `supabase link --project-ref YOUR_PROJECT_REF` and `supabase db push` from this folder.
 
 For live company context, add records to `company_facts` through a trusted ingestion path. The agent can only answer from data connected to its workspace; the sample connectors in the interface need provider-specific OAuth, sync jobs, and ingestion code before they can import company records.
 
