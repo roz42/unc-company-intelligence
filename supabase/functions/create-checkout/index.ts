@@ -13,7 +13,10 @@ Deno.serve(async req=>{
   if(!["starter","growth"].includes(plan)||!organizationId)return json({error:"Choose a paid plan and workspace"},400);
   const {data:member}=await userDb.from("organization_members").select("role").eq("organization_id",organizationId).eq("user_id",user.id).maybeSingle();
   if(!member||!(["owner","admin"].includes(member.role)))return json({error:"Workspace administrator access required"},403);
-  const priceId=Deno.env.get(plan==="starter"?"STRIPE_STARTER_PRICE_ID":"STRIPE_GROWTH_PRICE_ID");if(!priceId)return json({error:"That plan is not configured yet"},503);
+  // Price IDs are public catalog identifiers. Defaults make the configured UNC
+  // sandbox plans work immediately; environment overrides support other Stripe accounts.
+  const priceId=Deno.env.get(plan==="starter"?"STRIPE_STARTER_PRICE_ID":"STRIPE_GROWTH_PRICE_ID")
+    ??(plan==="starter"?"price_1UU6X0Q48BaEBlrHOzgjohfq":"price_1UU6XHQ48BaEBlrHS9cZDaT9");
   const stripeKey=Deno.env.get("STRIPE_SECRET_KEY"),origin=(Deno.env.get("APP_ORIGIN")??"").replace(/\/+$/,"");if(!stripeKey||!origin)return json({error:"Billing secrets and APP_ORIGIN must be configured"},503);
   const {data:sub}=await userDb.from("subscriptions").select("stripe_customer_id").eq("organization_id",organizationId).maybeSingle();
   const form=new URLSearchParams();form.set("mode","subscription");form.set("line_items[0][price]",priceId);form.set("line_items[0][quantity]","1");form.set("success_url",`${origin}/?billing=success`);form.set("cancel_url",`${origin}/?billing=cancelled`);form.set("client_reference_id",organizationId);form.set("metadata[organization_id]",organizationId);form.set("metadata[plan]",plan);form.set("subscription_data[metadata][organization_id]",organizationId);form.set("subscription_data[metadata][plan]",plan);if(sub?.stripe_customer_id)form.set("customer",sub.stripe_customer_id);else form.set("customer_email",user.email??"");
