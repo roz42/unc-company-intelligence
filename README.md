@@ -24,8 +24,8 @@ For a complete guided sandbox setup (test prices, Supabase secrets, deployment, 
 
 Starter and Growth use Stripe Checkout in subscription mode. The browser sends a signed-in workspace administrator to the `create-checkout` Supabase Edge Function, which creates a Checkout Session from Stripe price IDs. The Stripe secret key stays in Supabase. Stripe test mode is selected by using an `sk_test_...` key and test-mode recurring prices.
 
-1. In Stripe, turn on **Test mode**. Create recurring monthly EUR prices for Starter (€29) and Growth (€79), then copy each `price_...` ID from the test catalog.
-2. Set Supabase Edge Function secrets (never `config.js`): `STRIPE_SECRET_KEY=sk_test_...`, `STRIPE_STARTER_PRICE_ID=price_...`, `STRIPE_GROWTH_PRICE_ID=price_...`, and `APP_ORIGIN=https://your-hosted-site.example`.
+1. In Stripe, turn on **Test mode**. Starter uses `price_1UU6X0Q48BaEBlrHOzgjohfq`; Growth uses `price_1UU6XHQ48BaEBlrHS9cZDaT9`.
+2. Set Supabase Edge Function secrets (never `config.js`): `STRIPE_SECRET_KEY=sk_test_...` and `APP_ORIGIN=https://your-hosted-site.example`. The Price IDs are already configured as non-secret defaults in the checkout function.
 3. Deploy the functions from `outputs/lage`: `supabase functions deploy create-checkout`, `supabase functions deploy stripe-webhook`, and `supabase functions deploy add-company-website`.
 4. In Stripe Test mode, add a webhook endpoint `https://YOUR_PROJECT_REF.supabase.co/functions/v1/stripe-webhook`, subscribe to `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`, then add the endpoint signing secret as `STRIPE_WEBHOOK_SECRET=whsec_...` in Supabase.
 5. Sign in to UNC as a workspace owner or admin, open **Subscription**, and select Starter or Growth. Stripe Checkout should open. Use Stripe's standard test card `4242 4242 4242 4242`, any future expiry, and any CVC.
