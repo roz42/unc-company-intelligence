@@ -41,7 +41,7 @@ Do not put any of these values in `config.js`. You do not need to send them to m
 Install the [Supabase CLI](https://supabase.com/docs/guides/cli) if it is not already installed, then run these commands in Terminal:
 
 ```sh
-cd "/Users/robertzirk/Documents/Codex/2026-10-24/re/outputs/lage"
+cd path/to/unc-company-intelligence
 supabase login
 supabase link --project-ref vlxgfbdczpktuvxxrdqs
 supabase functions deploy create-checkout
