@@ -17,7 +17,7 @@ The current `file://` preview cannot be used for authenticated checkout. Serve t
 For local testing, open Terminal and run:
 
 ```sh
-cd "/Users/robertzirk/Documents/Codex/2026-10-24/re/outputs/lage"
+cd path/to/unc-company-intelligence
 python3 -m http.server 8000
 ```
 
