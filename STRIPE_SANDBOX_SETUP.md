@@ -21,7 +21,7 @@ cd path/to/unc-company-intelligence
 python3 -m http.server 8000
 ```
 
-Then open **http://localhost:8000/**. Use `http://localhost:8000` as `APP_ORIGIN` below (no trailing slash). If testing on a hosted site, use that exact HTTPS origin instead. The browser origin, `APP_ORIGIN`, and checkout return origin must match.
+Then open **http://localhost:8000/**. Use `http://localhost:8000` as `APP_ORIGIN` below (no trailing slash). For this GitHub Pages project site use the full base URL `https://roz42.github.io/unc-company-intelligence`. The function uses the full base URL for Stripe return links and its origin for CORS.
 
 ## 3. Save the secrets in Supabase
 
@@ -60,9 +60,9 @@ Linking may ask for the database password; it is available in the Supabase proje
 3. Select these events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`.
 4. Reveal and copy the endpoint signing secret (starts with `whsec_`). Add it in Supabase Edge Function Secrets as `STRIPE_WEBHOOK_SECRET`.
 
-## 6. Allow local sign-in and try checkout
+## 6. Allow sign-in and test checkout
 
-In Supabase **Authentication → URL Configuration**, add `http://localhost:8000/**` to **Redirect URLs**. Keep your production Site URL if one is already configured. Open the app from localhost, request a sign-in link, and sign in as a workspace owner/admin. Open **Subscription**, choose Starter or Growth, and confirm Stripe Checkout opens.
+In Supabase **Authentication → URL Configuration**, add both `http://localhost:8000/**` and `https://roz42.github.io/unc-company-intelligence/**` to **Redirect URLs**. Set the Site URL to the hosted GitHub Pages URL after Pages is enabled. In the app, use **Sign in / Sign up** with Google (after enabling the Google provider) or request an email sign-in link. Save the company profile to create a workspace. If you clicked a plan before signing in, the selected plan resumes checkout after saving the profile.
 
 Use Stripe's interactive test card `4242 4242 4242 4242`, any future expiry (for example `12/34`), any 3-digit CVC, and any name. Stripe confirms the checkout return; the webhook then syncs the plan into Supabase. Verify in the Supabase SQL Editor:
 
