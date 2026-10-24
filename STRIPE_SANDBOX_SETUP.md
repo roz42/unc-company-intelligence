@@ -48,7 +48,7 @@ supabase functions deploy create-checkout
 supabase functions deploy stripe-webhook
 ```
 
-Linking may ask for the database password; it is available in the Supabase project settings. The functions read their secrets directly from Supabase, so there are no secret files to create or commit.
+Linking may ask for the database password; it is available in the Supabase project settings. The functions read their secrets directly from Supabase, so there are no secret files to create or commit. For automatic deployment after future GitHub pushes, add a Supabase personal access token as the GitHub Actions secret `SUPABASE_ACCESS_TOKEN`; the included function workflow then deploys all four functions when their source changes.
 
 ## 5. Register the Stripe webhook
 
@@ -62,7 +62,7 @@ Linking may ask for the database password; it is available in the Supabase proje
 
 ## 6. Allow sign-in and test checkout
 
-In Supabase **Authentication → URL Configuration**, add both `http://localhost:8000/**` and `https://roz42.github.io/unc-company-intelligence/**` to **Redirect URLs**. Set the Site URL to the hosted GitHub Pages URL after Pages is enabled. In the app, use **Sign in / Sign up** with Google (after enabling the Google provider) or request an email sign-in link. Save the company profile to create a workspace. If you clicked a plan before signing in, the selected plan resumes checkout after saving the profile.
+In Supabase **Authentication → URL Configuration**, add both `http://localhost:8000/**` and `https://roz42.github.io/unc-company-intelligence/**` to **Redirect URLs**. Set the Site URL to the hosted GitHub Pages URL after Pages is enabled. In the app, use **Sign in / Sign up** with Google (after enabling the Google provider) or request an email sign-in link. Email sign-in works without Google OAuth; Google requires a Google OAuth client ID and secret under Supabase Auth → Providers. Save the company profile to create a workspace. If you clicked a plan before signing in, the selected plan resumes checkout after saving the profile.
 
 Use Stripe's interactive test card `4242 4242 4242 4242`, any future expiry (for example `12/34`), any 3-digit CVC, and any name. Stripe confirms the checkout return; the webhook then syncs the plan into Supabase. Verify in the Supabase SQL Editor:
 
