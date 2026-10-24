@@ -4,7 +4,7 @@ UNC's agent-led company operations workspace, based on the original `lage` repos
 
 ## Open the workspace
 
-The app is a static site and can be served from GitHub Pages. A Pages workflow is included under `.github/workflows/deploy-pages.yml`. Enable Pages with **Settings → Pages → Build and deployment → GitHub Actions**; pushes to `main` then publish the site. A second workflow deploys Supabase Edge Functions when their code changes; add a Supabase personal access token as the GitHub Actions secret `SUPABASE_ACCESS_TOKEN`. Supabase handles authentication and private company data, and Supabase Edge Functions handle AI and Stripe server requests.
+The app is a static site and can be served from GitHub Pages. A Pages workflow is included under `.github/workflows/deploy-pages.yml`. Enable Pages with **Settings → Pages → Build and deployment → GitHub Actions**; pushes to `main` then publish the site. A second workflow applies SQL migrations and deploys Supabase Edge Functions when their source changes. Add `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` under **Repository → Settings → Secrets and variables → Actions**. Supabase handles authentication and private company data, and Supabase Edge Functions handle AI and Stripe server requests.
 
 ## Session history and Supabase
 
