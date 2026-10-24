@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-56 -20 112 40" width="336" height="120">
+  <title>unc</title>
+  <g fill="none" stroke="#111111" stroke-width="4.5" stroke-linejoin="round">
+    <path d="M-22 -12 L-26.2 -12 A14 14 0 1 1 -45.8 -12 L-50 -12"/>
+    <path d="M-12 12 L-7.8 12 A14 14 0 1 1 11.8 12 L16 12"/>
+    <path d="M50 14 L50 9.8 A14 14 0 1 1 50 -9.8 L50 -14"/>
+  </g>
+</svg>

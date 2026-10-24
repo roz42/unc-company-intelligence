@@ -1,0 +1,14 @@
+# The user-facing functions verify the Supabase user session inside the handler
+# with auth.getUser(), supporting both legacy and publishable/secret API keys.
+[functions.agent-chat]
+verify_jwt = false
+
+[functions.create-checkout]
+verify_jwt = false
+
+# Stripe has no user JWT; this handler verifies the Stripe signature.
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.add-company-website]
+verify_jwt = false
