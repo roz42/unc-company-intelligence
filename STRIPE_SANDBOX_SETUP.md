@@ -7,7 +7,7 @@ This app already creates Stripe Checkout Sessions from the Supabase Edge Functio
 1. Open the Stripe Dashboard and switch **Test mode** on.
 2. Go to **Product catalog → Add product**. Create **UNC Starter** and add a recurring price of **€29 EUR / month**.
 3. Create **UNC Growth** with a recurring price of **€79 EUR / month**.
-4. Open each price and copy its **Price ID** (starts with `price_`, not the Product ID).
+4. The configured sandbox Price IDs are **Starter** `price_1UU6X0Q48BaEBlrHOzgjohfq` and **Growth** `price_1UU6XHQ48BaEBlrHS9cZDaT9`.
 5. In **Developers → API keys**, copy the test **Secret key** (starts with `sk_test_`). Do not share it in chat or put it in the website files.
 
 ## 2. Choose the app origin
@@ -30,11 +30,11 @@ Open the Supabase project **vlxgfbdczpktuvxxrdqs → Edge Functions → Secrets*
 | Name | Value |
 | --- | --- |
 | `STRIPE_SECRET_KEY` | Stripe test secret starting `sk_test_` |
-| `STRIPE_STARTER_PRICE_ID` | Starter monthly test Price ID starting `price_` |
-| `STRIPE_GROWTH_PRICE_ID` | Growth monthly test Price ID starting `price_` |
+| `STRIPE_STARTER_PRICE_ID` | Optional override; defaults to `price_1UU6X0Q48BaEBlrHOzgjohfq` |
+| `STRIPE_GROWTH_PRICE_ID` | Optional override; defaults to `price_1UU6XHQ48BaEBlrHS9cZDaT9` |
 | `APP_ORIGIN` | `http://localhost:8000` or the hosted site origin |
 
-Do not put any of these values in `config.js`. You do not need to send them to me. Confirm the database setup has `public.organizations`, `public.organization_members`, and `public.subscriptions`; the first two are needed for workspace authorization and the last stores the Stripe status.
+Do not put `STRIPE_SECRET_KEY` or `STRIPE_WEBHOOK_SECRET` in `config.js`. The two Price IDs are already configured as non-secret defaults in the checkout function; you can override them in Supabase if you use a different Stripe catalog. Confirm the database setup has `public.organizations`, `public.organization_members`, and `public.subscriptions`; the first two are needed for workspace authorization and the last stores the Stripe status.
 
 ## 4. Deploy the checkout and webhook functions
 
