@@ -48,7 +48,7 @@ supabase functions deploy create-checkout
 supabase functions deploy stripe-webhook
 ```
 
-Linking may ask for the database password; it is available in the Supabase project settings. The functions read their secrets directly from Supabase, so there are no secret files to create or commit. For automatic deployment after future GitHub pushes, add a Supabase personal access token as the GitHub Actions secret `SUPABASE_ACCESS_TOKEN`; the included function workflow then deploys all four functions when their source changes.
+Linking may ask for the database password; it is available in the Supabase project settings. The functions read their secrets directly from Supabase, so there are no secret files to create or commit. For automatic migrations and deployment after future GitHub pushes, add `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` under GitHub **Repository → Settings → Secrets and variables → Actions**. The included workflow applies migrations and deploys all four functions when their source changes.
 
 ## 5. Register the Stripe webhook
 
